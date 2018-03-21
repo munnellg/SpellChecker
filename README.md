@@ -28,51 +28,51 @@ The standard datasets for evaluating a spell checker seems to be those surroundi
 
 The dictionary for corrections was built from the Debian Linux `/usr/share/dict/american-english` file. You will need to provide your own dictionary file if you want to test this application.
 
-The total runtime and accuracy for the application on each of the spell checker datasets is reported below. Note that this includes the time taken to actually build the dictionary, so the number of queries-per-second is a little higher than it may seem from these figures.
+The total runtime and accuracy for the application on each of the spell checker datasets is reported below. The run times are extremely approximate as they include the time taken to build the dictionary and the time to check if a query term is "known".
 
 The evaluation was performed using a case insensitive dictionary.
 
 ### aspell
 ```
-Processed 531 queries: 0.986817% correct
+Processed 531 queries: 0.514124% correct (24 unknown)
 
-real	0m1.469s
-user	0m1.432s
-sys	0m0.040s
+real	0m2.028s
+user	0m1.988s
+sys	0m0.036s
 ```
 
 ### birkbeck
 ```
-Processed 36133 queries: 0.998367% correct
+Processed 36133 queries: 0.337392% correct (328 unknown)
 
-real	1m8.328s
-user	1m8.244s
-sys	0m0.076s
+real	1m28.432s
+user	1m28.392s
+sys	0m0.032s
 ```
 
 ### spell-testset1
 ```
-Processed 270 queries: 0.988889% correct
+Processed 270 queries: 0.659259% correct (4 unknown)
 
-real	0m1.104s
-user	0m1.076s
-sys	0m0.028s
+real	0m1.351s
+user	0m1.316s
+sys	0m0.032s
 ```
 
 ### spell-testset2
 ```
-Processed 400 queries: 0.985000% correct
+Processed 400 queries: 0.682500% correct (13 unknown)
 
-real	0m1.531s
-user	0m1.496s
-sys	0m0.032s
+real	0m2.055s
+user	0m2.000s
+sys	0m0.052s
 ```
 
 ### wikipedia
 ```
-Processed 2455 queries: 0.993890% correct
+Processed 2455 queries: 0.710794% correct (85 unknown)
 
-real	0m6.650s
-user	0m6.600s
-sys	0m0.048s
+real	0m8.891s
+user	0m8.852s
+sys	0m0.036s
 ```

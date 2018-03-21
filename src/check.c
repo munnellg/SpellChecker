@@ -228,7 +228,7 @@ query ( struct vector_node *dict ) {
 void
 evaluate ( struct vector_node *dict, char *fname ) {
 	char target[BUF_MAX], query[BUF_MAX], result[BUF_MAX];	
-	int querycnt = 0, correct = 0;
+	int querycnt = 0, correct = 0, unknown = 0;
 
 	FILE *f;
 
@@ -241,18 +241,21 @@ evaluate ( struct vector_node *dict, char *fname ) {
 	while ( fscanf(f, "%s", query) != EOF ) {		
 		if ( strrchr(query, ':') ) {
 			strncpy( target, query, strlen(query)-1 );
+			target[strlen(query)-1] = 0;
+			if ( best_match( dict, target, result, BUF_MAX ) != 1 ) {
+				unknown++;
+			}
 		} else {
 			querycnt++;
-
-			best_match( dict, query, result, BUF_MAX );
-			correct += (strcmp( result, target ) != 0 );
+			best_match( dict, query, result, BUF_MAX );			
+			correct += (strcmp( result, target ) == 0 );
 		}
 	}
 
 	fclose(f);
 
-	printf("Processed %d queries: %f%% correct\n",
-		querycnt, (float)correct/querycnt
+	printf("Processed %d queries: %f%% correct (%d unknown)\n",
+		querycnt, (float)correct/querycnt, unknown
 	);
 }
 
