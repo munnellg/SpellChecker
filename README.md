@@ -14,7 +14,7 @@ Given a pool of candidate corrections retrieved from the tree, this program uses
 
 # Making and Running
 
-The application may be built on Linux simply by calling make from the root directory. The binary takes one or two arguments as input. The first is mandatory and is a list of words to be added to the dictionary. These are stored in a case sensitive manner. 
+The application may be built on Linux simply by calling `make` from the root directory. The binary takes one or two arguments as input. The first is mandatory and is a list of words to be added to the dictionary. These are stored in a case sensitive manner. 
 
 If a second argument is provided then the contents of that file are used to evaluate the performance of the spell checker. Otherwise the application launches in interactive mode and allows you to query for correct spellings of words.
 
@@ -30,7 +30,7 @@ The dictionary for corrections was built from the Debian Linux `/usr/share/dict/
 
 The total runtime and accuracy for the application on each of the spell checker datasets is reported below. The run times are extremely approximate as they include the time taken to build the dictionary and the time to check if a query term is "known".
 
-The evaluation was performed using a case insensitive dictionary.
+The evaluation was performed using a case insensitive dictionary. Execution time was computed using the Linux `time` utility.
 
 ### aspell
 ```
