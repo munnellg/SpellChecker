@@ -24,7 +24,7 @@ jaro_winkler ( char *s1, char *s2 ) {
 	int slen1, slen2, window;	
 	double match = 0, trans = 0, jaro;
 
-	if ( !s1 || !s2 ) {	return 0.0;	}
+	if ( !s1 || !s2 ) { return 0.0; }
 
 	slen1 = strlen(s1);
 	slen2 = strlen(s2);	
@@ -254,7 +254,7 @@ evaluate ( struct vector_node *dict, char *fname ) {
 
 	fclose(f);
 
-	printf("Processed %d queries: %f%% correct (%d unknown)\n",
+	printf("Processed %d queries: %f correct (%d unknown)\n",
 		querycnt, (float)correct/querycnt, unknown
 	);
 }
