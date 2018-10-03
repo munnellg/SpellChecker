@@ -2,11 +2,11 @@
 
 An incredibly simple, stupid spell checker written over the course of an hour or two.
 
-Marijn Schraagen's PhD thesis "Aspects of Record Linkage" presents a method of reducing the search space when comparing records in a database using bit vectors. The method translates very easily to a spell checker which is what is presented here.
+Martin Schraagen's PhD thesis "Aspects of Record Linkage" presents a method of reducing the search space when comparing records in a database using bit vectors. The method translates very easily to a spell checker which is what is presented here.
 
-Bit vectors encode strings as sequences of flags based on a vocabulary. For example, given the alphabet "abcd", the string "cab" would be encoded as { 1, 1, 1, 0 } i.e. it contains an a, b, and a c but not a d. "Dab" would be encoded as { 1, 1, 0, 1 }.
+Bit vectors encode strings as sequences of flags based on a vocabulary. For example, given the alphabet "abcd", the string "cab" would be encoded as { 1, 1, 1, 0 } i.e. it contains an 'a', 'b', and a 'c' but not a 'd'. "Dab" would be encoded as { 1, 1, 0, 1 }.
 
-Bit vectors can be used to construct a tree which may be used to find terms that contain specific characters. Hence given a spelling error such as "the" misspelled as "teh", the tree may be searched for correct words that contain the letters t, e, and h. Search is followed by the application of a string similarity function that selects the most probable correction from a pool of candidates.
+Bit vectors can be used to construct a tree which may be used to find terms that contain specific characters. Hence given a spelling error such as "the" misspelled as "teh", the tree may be searched for correct words that contain the letters 't', 'e', and 'h'. Search is followed by the application of a string similarity function that selects the most probable correction from a pool of candidates.
 
 The search process can also allow for errors where characters are omitted or added to words accidentally, e.g. "exit" being misspelled "ext". Enabling this tolerance is simply a matter of flipping bits in the bit vector up to a maximum error while the tree is being searched.
 
@@ -32,47 +32,61 @@ The total runtime and accuracy for the application on each of the spell checker 
 
 The evaluation was performed using a case insensitive dictionary. Execution time was computed using the Linux `time` utility.
 
+The evaluation produces two sets of scores:
++ The first is an overall evaluation of the performance of the spell checker. This includes errors where the correct word is not part of the dictionary i.e. it is impossible for the spell checker to find the correct word
++ The second excludes mistakes that are the result of words missing from the dictionary i.e. the spell checker should have found the right answer but did not.
+
 ### aspell
 ```
-Processed 531 queries: 0.514124% correct (24 unknown)
+Processed 450 terms (24 unknown) : 531 queries (24 unknown)
+All Queries   : 0.514124 correct
+Known Queries : 0.538462 correct
 
-real	0m2.028s
-user	0m1.988s
+real	0m2.632s
+user	0m2.592s
 sys	0m0.036s
 ```
 
 ### birkbeck
 ```
-Processed 36133 queries: 0.337392% correct (328 unknown)
+Processed 6136 terms (328 unknown) : 36133 queries (952 unknown)
+All Queries   : 0.337392 correct
+Known Queries : 0.346522 correct
 
-real	1m28.432s
-user	1m28.392s
-sys	0m0.032s
+real	1m28.457s
+user	1m28.316s
+sys	0m0.124s
 ```
 
 ### spell-testset1
 ```
-Processed 270 queries: 0.659259% correct (4 unknown)
+Processed 141 terms (4 unknown) : 270 queries (4 unknown)
+All Queries   : 0.659259 correct
+Known Queries : 0.669173 correct
 
-real	0m1.351s
-user	0m1.316s
-sys	0m0.032s
+real	0m1.534s
+user	0m1.488s
+sys	0m0.044s
 ```
 
 ### spell-testset2
 ```
-Processed 400 queries: 0.682500% correct (13 unknown)
+Processed 363 terms (13 unknown) : 400 queries (15 unknown)
+All Queries   : 0.682500 correct
+Known Queries : 0.709091 correct
 
-real	0m2.055s
-user	0m2.000s
-sys	0m0.052s
+real	0m2.066s
+user	0m2.024s
+sys	0m0.040s
 ```
 
 ### wikipedia
 ```
-Processed 2455 queries: 0.710794% correct (85 unknown)
+Processed 1922 terms (85 unknown) : 2455 queries (98 unknown)
+All Queries   : 0.710794 correct
+Known Queries : 0.740348 correct
 
-real	0m8.891s
-user	0m8.852s
-sys	0m0.036s
+real	0m10.795s
+user	0m10.740s
+sys	0m0.052s
 ```
