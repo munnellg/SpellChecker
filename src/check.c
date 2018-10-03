@@ -227,8 +227,11 @@ query ( struct vector_node *dict ) {
 
 void
 evaluate ( struct vector_node *dict, char *fname ) {
-	char target[BUF_MAX], query[BUF_MAX], result[BUF_MAX];	
-	int querycnt = 0, correct = 0, unknown = 0;
+	char target[BUF_MAX], query[BUF_MAX], result[BUF_MAX];
+	int total_terms = 0, known_terms = 0;	
+	int total_query_count = 0, total_correct = 0;
+	int known_query_count = 0, known_correct = 0;
+	int is_correct = 0, is_unknown = 0;
 
 	FILE *f;
 
@@ -242,20 +245,36 @@ evaluate ( struct vector_node *dict, char *fname ) {
 		if ( strrchr(query, ':') ) {
 			strncpy( target, query, strlen(query)-1 );
 			target[strlen(query)-1] = 0;
-			if ( best_match( dict, target, result, BUF_MAX ) != 1 ) {
-				unknown++;
-			}
+			is_unknown = (best_match( dict, target, result, BUF_MAX ) != 1);
+			total_terms++;
+			if ( !is_unknown ) { known_terms++; }
 		} else {
-			querycnt++;
-			best_match( dict, query, result, BUF_MAX );			
-			correct += (strcmp( result, target ) == 0 );
+			best_match( dict, query, result, BUF_MAX );
+			is_correct = (strcmp( result, target ) == 0 );
+
+			total_query_count++;			
+			total_correct += is_correct ;
+
+			if ( !is_unknown ) {
+				known_query_count++;
+				known_correct += is_correct;
+			}
 		}
 	}
 
 	fclose(f);
 
-	printf("Processed %d queries: %f correct (%d unknown)\n",
-		querycnt, (float)correct/querycnt, unknown
+	printf("Processed %d terms (%d unknown) : %d queries (%d unknown)\n",
+		total_terms, total_terms - known_terms, 
+		total_query_count, total_query_count - known_query_count
+	);
+	
+	printf("All Queries   : %f correct\n",
+		(float) total_correct / total_query_count
+	);
+
+	printf("Known Queries : %f correct\n",
+		(float) known_correct / known_query_count
 	);
 }
 
