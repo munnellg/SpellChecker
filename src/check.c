@@ -231,7 +231,9 @@ evaluate ( struct vector_node *dict, char *fname ) {
 	int total_terms = 0, known_terms = 0;	
 	int total_query_count = 0, total_correct = 0;
 	int known_query_count = 0, known_correct = 0;
+	int misspelling_in_dictionary = 0;
 	int is_correct = 0, is_unknown = 0;
+	float similarity = 0.0f;
 
 	FILE *f;
 
@@ -249,8 +251,13 @@ evaluate ( struct vector_node *dict, char *fname ) {
 			total_terms++;
 			if ( !is_unknown ) { known_terms++; }
 		} else {
-			best_match( dict, query, result, BUF_MAX );
+			similarity = best_match( dict, query, result, BUF_MAX );
+
 			is_correct = (strcmp( result, target ) == 0 );
+
+			if ( similarity == 1 && !is_correct ) {
+				misspelling_in_dictionary++;
+			}
 
 			total_query_count++;			
 			total_correct += is_correct ;
@@ -267,6 +274,10 @@ evaluate ( struct vector_node *dict, char *fname ) {
 	printf("Processed %d terms (%d unknown) : %d queries (%d unknown)\n",
 		total_terms, total_terms - known_terms, 
 		total_query_count, total_query_count - known_query_count
+	);
+	
+	printf("%d \"misspellings\" were found in the dictionary\n",
+		misspelling_in_dictionary
 	);
 	
 	printf("All Queries   : %f correct\n",
